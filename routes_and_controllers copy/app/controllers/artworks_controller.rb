@@ -1,5 +1,6 @@
 class ArtworksController < ApplicationController
   def index
+    debugger
     if params.has_key?(:user_id)
       @artworks = Artwork.where(artist_id: params[:user_id])
       @artworks += Artworkshare.where(viewer_id: params[:user_id])
@@ -14,7 +15,7 @@ class ArtworksController < ApplicationController
   end
 
   def create
-    @artwork = Artwork.new(params.require(:artworks).permit(:artist_id, :title, :image_url))
+    @artwork = Artwork.new(artwork_params)
     if @artwork.save
       render json: @artwork
     else
@@ -24,7 +25,7 @@ class ArtworksController < ApplicationController
 
   def update
     @artwork = Artwork.find(params[:id])
-    if @artwork.update(params.require(:artworks).permit(:artist_id, :title, :image_url))
+    if @artwork.update(artwork_params)
       redirect_to artwork_url(@artwork)
     else
       render json: artwork.errors.full_messages
@@ -39,7 +40,7 @@ class ArtworksController < ApplicationController
 
   private
   def artwork_params
-    params.require(:artwork).permit(:artist_id)
+    params.require(:artwork).permit(:artist_id, :title, :image_url)
   end
       
 

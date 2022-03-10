@@ -17,4 +17,12 @@ class User < ApplicationRecord
   has_many :shared_viewers,
     through: :artwork_shares,
     source: :viewers
+
+  has_many :comments,
+    primary_key: :id,
+    foreign_key: :user_id,
+    class_name: :Comment
+
+
+  
 end
